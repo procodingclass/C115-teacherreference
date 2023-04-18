@@ -8,8 +8,8 @@ import shutil
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from_dir = "C:/Users/preet/Downloads"              # Add the path of you "Downloads" folder.
-to_dir = "C:/Users/preet/Desktop/Downloaded_Files" #Create "Document_Files" folder in your Desktop and update the path accordingly.
+from_dir = "C:/Users/HP/Downloads"              # Add the path of you "Downloads" folder.
+to_dir = "C:/Users/HP/Desktop/download_files" #Create "Document_Files" folder in your Desktop and update the path accordingly.
 
 
 dir_tree = {
@@ -43,11 +43,20 @@ class FileMovementHandler(FileSystemEventHandler):
                 path3 = to_dir + '/' + key + '/' + file_name
 
                 if os.path.exists(path2):
-
-                    print("Directory Exists...")
-                    print("Moving " + file_name + "....")
-                    shutil.move(path1, path3)
+                    print("Directory Exists...") 
                     time.sleep(1)
+                    if os.path.exists(path3):
+                        print("File Already Exists in " + key + "....")
+                        print("Renaming File" + file_name +"....")
+                        new_file_name = os.path.splitext(file_name)[0] + str(random.randint(0, 999)) + os.path.splitext(file_name)[1]
+                        path4 = to_dir + '/' + key + '/' + new_file_name
+                        print("Moving "+ new_file_name + "...")
+                        shutil.move(path1, path4)
+                        time.sleep(1)
+                    else:
+                        print("Moving " + file_name + "....")
+                        shutil.move(path1, path3)
+                        time.sleep(1)
 
                 else:
                     print("Making Directory...")
@@ -75,4 +84,3 @@ try:
 except KeyboardInterrupt:
     print("stopped!")
     observer.stop()
-
